@@ -1,10 +1,11 @@
+-- DROP  table chain CASCADE;
 -- Added non-negative check on num_of_hotel
 CREATE TABLE chain (
-chain_name VARCHAR(50) PRIMARY KEY, 
-address  VARCHAR(50) NOT NULL,
-num_of_hotel INTEGER NOT NULL CHECK (num_of_hotel >= 0),
-contact_email VARCHAR(50) NOT NULL,
-phone_numbers INTEGER[] NOT NULL
+	chain_name VARCHAR(50) PRIMARY KEY, 
+	address  VARCHAR(50) NOT NULL,
+	num_of_hotel INTEGER NOT NULL CHECK (num_of_hotel >= 0),
+	contact_email VARCHAR(50) NOT NULL,
+	phone_numbers BIGINT[] NOT NULL
 );
 
 -- Changed employee_sin to CHAR(9), added username and password attributes
@@ -15,7 +16,8 @@ CREATE TABLE employee (
 	username VARCHAR(50) UNIQUE NOT NULL,
 	password VARCHAR(50) NOT NULL
 );
-
+-- DROP  table hotel CASCADE;
+--PHONE NUM IS BIG INT
 -- Added negative check on number_of_rooms, changed manager_sin to CHAR(9), changed category to SMALLINT, added 1-5 check on category
 CREATE TABLE hotel (
 	hotel_name VARCHAR(50) PRIMARY KEY,
@@ -23,16 +25,16 @@ CREATE TABLE hotel (
 	manager_sin CHAR(9) NOT NULL,
 	address VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
-	phone_numbers INTEGER[] NOT NULL,
+	phone_numbers BIGINT[] NOT NULL,
 	category SMALLINT NOT NULL CHECK (category >= 1 AND category <= 5),
 	FOREIGN KEY (manager_sin) REFERENCES employee(employee_sin)
 );
 
 CREATE TABLE chain_hotel (
 	hotel_name  VARCHAR(50) PRIMARY KEY,
-chain_name  VARCHAR(50) NOT NULL,
-FOREIGN KEY (hotel_name) REFERENCES hotel(hotel_name),
-FOREIGN KEY (chain_name) REFERENCES chain(chain_name)
+	chain_name  VARCHAR(50) NOT NULL,
+	FOREIGN KEY (hotel_name) REFERENCES hotel(hotel_name),
+	FOREIGN KEY (chain_name) REFERENCES chain(chain_name)
 );
 
 -- Changed employee_sin to CHAR(9)
@@ -55,8 +57,8 @@ CREATE TABLE customer (
 );
 
 -- New function to use for price check in room table
-CREATE FUNCTION roomAmount(_hotel_name VARCHAR(50)) RETURNS INTEGER
-	AS 'SELECT number_of_rooms FROM hotel WHERE hotel_name = _hotel_name;'
+CREATE FUNCTION roomAmount(_hotel_name VARCHAR(50)) RETURNS INTEGER AS
+	'SELECT number_of_rooms FROM hotel WHERE hotel_name = _hotel_name;'
 	LANGUAGE SQL;
 
 CREATE TYPE amenitiesenum AS ENUM ('Toiletries', 'Coffee Kit', 'Bathrobes', 'Included Breakfast', 'Included WiFi', 'Pillow Options');
@@ -91,7 +93,7 @@ CREATE TABLE rents (
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL CHECK (start_date < end_date),
 	was_booked BOOL NOT NULL,
-	PRIMARY KEY (customer_sin, room_number, start_date)
+	PRIMARY KEY (customer_sin, room_number, hotel_name, start_date)
 );
 
 -- Changed customer_sin to CHAR(9), check tha end_date is after start_date
@@ -103,5 +105,5 @@ CREATE TABLE books (
 	FOREIGN KEY (hotel_name, room_number) REFERENCES room(hotel_name, room_number),
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL  CHECK (start_date < end_date),
-	PRIMARY KEY (customer_sin, room_number, start_date)
+	PRIMARY KEY (customer_sin, room_number, hotel_name, start_date)
 );
