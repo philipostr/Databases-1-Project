@@ -1,6 +1,12 @@
 <?php
     session_start();
     require_once 'db.php';
+
+    // check if someone went straight to this page without logging in
+    if (!isset($_SESSION['username']) || !isset($_SESSION['usertype']) || $_SESSION['usertype'] != 'employee') {
+        header("location: {$PGVALUES['host']}/Databases-1-Project/login.php");
+    }
+
     DBconnect();
 
 
