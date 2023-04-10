@@ -11,7 +11,7 @@
 
         if (checkLogin($usertype, $username, $password)) {
             $_SESSION['usertype'] = $usertype;
-            $_SESSION['username'] = $un;
+            $_SESSION['username'] = $username;
     
             if ($usertype === 'customer') {
                 header("location: {$PGVALUES['host']}/Databases-1-Project/customer.php");
