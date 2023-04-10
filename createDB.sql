@@ -229,7 +229,7 @@ INSERT INTO hotel VALUES
 ('Kimpton Saint George Hotel', 60, '123456780', 'Toronto, 280 Bloor St W', 'kimptontoronto@example.com', ARRAY[4165559012, 4165553456], 3),
 ('The Ritz-Carlton, Toronto', 120, '345678902', 'Toronto, 181 Wellington St W', 'ritzcarltontoronto@example.com', ARRAY[4165551234, 4165555678], 5),
 ('The Ivy at Verity', 40, '567890124', 'Toronto, 111d Queen St E', 'ivyatveritytoronto@example.com', ARRAY[4165553456, 4165557890], 3),
-('The Broadview Hotel', 80, '678901235', 'Toronto, 106 Broadview Ave', 'broadviewtoronto@example.com', ARRAY[4165554567, 4165558901], 3),
+('The Broadview Hotel', 80, '678901235', 'Toronto, 106 Broadview Ave', 'broadviewtoronto@example.com', ARRAY[4165554567, 4165558901], 3);
 
 INSERT INTO works VALUES
 ('123456789', 'The Plaza Hotel', '{Manager}'),
