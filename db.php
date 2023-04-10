@@ -20,9 +20,7 @@ function checkLogin($type, $un, $ps) {
 
 function getEmployeeSinAndName($username){
     $query = "SELECT employee_sin, name  FROM employee WHERE username = $1 ";
-    // $query2 = "SELECT username  FROM employee WHERE username =". $username;
     pg_prepare($GLOBALS['dbconn'], 'getEmployeeSinAndName', $query);
-    // $result = pg_query($GLOBALS['dbconn'], $query2);
     $result = pg_execute($GLOBALS['dbconn'], 'getEmployeeSinAndName', [$username]);
     return (pg_fetch_object($result));
 }
@@ -35,9 +33,15 @@ function getEmployeeHotel($sin){
 }
 
 function getBookings($sin){
-    $query = "SELECT * FROM works WHERE works.employee_sin = $1";
-    pg_prepare($GLOBALS['dbconn'], 'getEmployeeHotel', $query);
-    $result = pg_execute($GLOBALS['dbconn'], 'getEmployeeHotel', [$sin]);
-    return (pg_fetch_object($result));
+    $query = "SELECT * FROM rents WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
+    pg_prepare($GLOBALS['dbconn'], 'getBookings', $query);
+    $result = pg_execute($GLOBALS['dbconn'], 'getBookings', [$sin]);
+    // print_r(pg_fetch_object($result));
+    // print_r(pg_fetch_object($result));
+    // return (pg_fetch_object($result));
+    // while($row = pg_fetch_object($result)) {
+    //     print_r($row); 
+    // }
+    return $result;
 }
 

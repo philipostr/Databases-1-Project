@@ -12,13 +12,20 @@
     // print_r( getEmployeeInfo($user));
     $empinf = ( getEmployeeSinAndName($user) );
     // var_dump($empinf);
-    $sin = $empinf->employee_sin;
+    $esin = $empinf->employee_sin;
     $name = $empinf ->name;
-    $r = ( getEmployeeHotel($sin) );
+    $r = ( getEmployeeHotel($esin) );
     $hotel = $r -> hotel_name;
     $position= $r -> position;
     // echo "<br/> <br/>";
     var_dump($r);
+    echo "<br/> <br/>";
+    $csin ="111111111";
+    $bookings =(getBookings($csin));
+    while($row = pg_fetch_object($bookings)) {
+        print_r($row); 
+    }
+    
     // var_dump( getEmployeeHotel($sin));
 
     // include 'convertbooking.php';
