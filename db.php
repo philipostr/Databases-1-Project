@@ -5,7 +5,7 @@ require_once 'db_meta.php';
 
 
 function DBconnect() {
-    $conn_string = "host=".PGVALUES['host']." port=".PGVALUES['port']." dbname=".PGVALUES['dbname']." user=".PGVALUES['user']." password=".PGVALUES['password']."";
+    $conn_string = "host=".PGVALUES['host']." port=".PGVALUES['port']." dbname=".PGVALUES['dbname']." user=".PGVALUES['user']." password=".PGVALUES['password'];
     $GLOBALS['dbconn'] = pg_connect($conn_string) or die('Connection failed');
 }
 
