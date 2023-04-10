@@ -16,7 +16,7 @@
     $user = $_SESSION['username'];
     
     // print_r( getEmployeeInfo($user));
-    $empinf = ( getEmployeeSinAndName($user) );
+    $empinf = getEmployeeSinAndName($user);
     // var_dump($empinf);
     $esin = $empinf->employee_sin;
     $name = $empinf ->name;
@@ -44,7 +44,7 @@
     <title>Alliance Hotels</title>
 </head>
 <body>
-    <h1> <?php echo $hotel ?>  </h1>
+    <h1> <?php echo $hotel ?> Employee Page </h1>
     <h2>Welcome, <?php echo $name ." ". $position ?> </h2>
 
     <!-- <button>Covert booking to renting</button>

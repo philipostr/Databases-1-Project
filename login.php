@@ -33,13 +33,13 @@
 </head>
 <body>
     <h1>Welcome to Alliance Hotels!</h1>
-    <form method="POST" action="">
+    <form method="POST">
         <label>
-            <input name="usertype" id="customer" type="radio" value="customer" <?php if(isset($usertype)) {if ($usertype=='customer') echo 'checked';} else {echo 'checked';}  ?>>
+            <input name="usertype" type="radio" value="customer" <?php if(isset($usertype)) {if ($usertype=='customer') echo 'checked';} else {echo 'checked';}  ?>>
             Customer
         </label>
         <label>
-            <input name="usertype" id="employee" type="radio" value="employee" <?php if(isset($usertype) && $usertype=='employee') echo 'checked' ?>>
+            <input name="usertype" type="radio" value="employee" <?php if(isset($usertype) && $usertype=='employee') echo 'checked' ?>>
             Employee
         </label><br>
 
