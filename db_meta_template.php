@@ -1,11 +1,6 @@
 <?php
 
 /*
-        DO NOT push local changes to this file, it should
-        serve as a general template to ONLY be changed LOCALLY.
-*/
-
-/*
         CONNECTION refers to the connection tab in the
         properties of your PostgreSQL 15 server (or whatever 
         server you created the database) in pgAdmin.

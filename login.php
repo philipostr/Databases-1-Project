@@ -21,6 +21,7 @@
             exit;
         } else {
             $problem = "User not found in the database";
+
         }
     }
 ?>
@@ -34,19 +35,19 @@
     <h1>Welcome to Alliance Hotels!</h1>
     <form method="POST" action="">
         <label>
-            <input name="usertype" id="customer" type="radio" value="customer" checked required>
+            <input name="usertype" id="customer" type="radio" value="customer" <?php if(isset($usertype)) {if ($usertype=='customer') echo 'checked';} else {echo 'checked';}  ?>>
             Customer
         </label>
         <label>
-            <input name="usertype" id="employee" type="radio" value="employee">
+            <input name="usertype" id="employee" type="radio" value="employee" <?php if(isset($usertype) && $usertype=='employee') echo 'checked' ?>>
             Employee
         </label><br>
 
         <label>Username: 
-            <input name="username" type="text" placeholder="Username123" required>
+            <input name="username" type="text" placeholder="Username123" value="<?php echo isset($username) ? $username : ''; ?>" required>
         </label><br>
         <label>Password: 
-            <input name="password" type="text" placeholder="Password321" required>
+            <input name="password" type="text" placeholder="Password321" value="<?php echo isset($password) ? $password : ''; ?>" required>
         </label><br>
         
         <input name="login" type="submit" value="Login">

@@ -14,7 +14,7 @@ function checkLogin($type, $un, $ps) {
            ." WHERE username = $1 AND password = $2";
     pg_prepare($GLOBALS['dbconn'], 'logincheck', $query);
     $result = pg_execute($GLOBALS['dbconn'], 'logincheck', [$un, $ps]);
-    echo $result;
+    //echo $result;
     return pg_num_rows($result) > 0;
 }
 
