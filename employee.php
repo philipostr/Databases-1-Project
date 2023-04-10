@@ -12,15 +12,16 @@
     // print_r( getEmployeeInfo($user));
     $empinf = ( getEmployeeSinAndName($user) );
     // var_dump($empinf);
-    $sin = $empinf [0];
-    $name = $empinf [1];
+    $sin = $empinf->employee_sin;
+    $name = $empinf ->name;
     $r = ( getEmployeeHotel($sin) );
-    $hotel = $r[1];
-    $position= $r[2];
+    $hotel = $r -> hotel_name;
+    $position= $r -> position;
     // echo "<br/> <br/>";
     var_dump($r);
     // var_dump( getEmployeeHotel($sin));
 
+    // include 'convertbooking.php';
 
 ?>
 <html>
@@ -45,5 +46,9 @@
         <input name="login" type="submit" value="Rent without booking">
         <p><?php echo isset($problem) ? $problem : '' ?></p>
     </form>
+
+    <?php
+    include 'convertbooking.php'; 
+    ?>
 </body>
 </html>
