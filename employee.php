@@ -37,6 +37,12 @@
     echo "bookingsr ";
     print_r( $bookingsr);
 
+    echo '<br><br>';
+    $rents =(getRents($csin));
+	$rentsr = pg_fetch_all($rents);
+    print_r( $rentsr);
+
+
     // $bookings =(getBookings($csin));
     // while($row = pg_fetch_object($bookings)) {
     //     print_r($row); 
@@ -62,6 +68,8 @@
     var_dump($r2);
     $bookings =(getBookings($csin));
 	$bookingsr = pg_fetch_all($bookings);
+    $rents =(getRents($csin));
+	$rentsr = pg_fetch_all($rents);
 }
 
 ?>
@@ -94,8 +102,6 @@
     
     <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
 
-    <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
-
     <form action = "<?php echo $_SERVER['PHP_SELF'];?>" method='POST'>
 		<table>
 			<tr>
@@ -108,7 +114,10 @@
 
 			<?php
             
-            $count=0;
+            //false when no results
+            if ($bookingsr != false)
+            {
+                $count=0;
 			foreach($bookingsr as $array)
 			{
                 
@@ -123,9 +132,51 @@
 			          </tr>';
                 $count++;
 			}
+            }
+            else{
+                echo '<tr><td>none</td></tr>';
+            }
 			?>
 
 		</table>
     </form>
+    <br><br>
+
+    <h3>Customer <?php echo $csin ?> rented the following today: </h3>
+
+
+    <table>
+			<tr>
+				<th>Hotel Name</th>
+				<th>Room Number</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+                <th>Was a Booking</th>
+			</tr>
+
+			<?php
+            
+            if ($rentsr != false)
+            {
+			foreach($rentsr as $array)
+			{
+                
+			    echo '<tr>
+									<td>'. $array['hotel_name'].'</td>
+									<td>'. $array['room_number'].'</td>
+									<td>'. $array['start_date'].'</td>
+									<td>'. $array['end_date'].'</td>
+                                    <td>'. ($array['was_booked']? 'true' : 'false') . '</td>
+
+			          </tr>';
+			}
+            }
+            else{
+                echo '<tr><td>none</td></tr>';
+            }
+			?>
+
+	</table>
+
 </body>
 </html>
