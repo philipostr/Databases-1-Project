@@ -42,17 +42,45 @@ function getEmployeeHotel($sin){
 
 // Used in employee.php
 function getBookings($sin){
-    $query = "SELECT * FROM rents WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
-    pg_prepare($GLOBALS['dbconn'], 'getBookings', $query);
-    $result = pg_execute($GLOBALS['dbconn'], 'getBookings', [$sin]);
-    // print_r(pg_fetch_object($result));
-    // print_r(pg_fetch_object($result));
-    // return (pg_fetch_object($result));
-    // while($row = pg_fetch_object($result)) {
-    //     print_r($row); 
-    // }
+    $query = "SELECT * FROM books WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
+    // pg_prepare($GLOBALS['dbconn'], 'getBookings', $query);
+    // $result = pg_execute($GLOBALS['dbconn'], 'getBookings', [$sin]);
+    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);
+    
     return $result;
 }
+
+
+function deleteBooking($sin, $rn, $hn, $sd, $ed){
+    $query = "DELETE FROM books WHERE customer_sin = $1 and  room_number = $2 and  hotel_name = $3 and start_date =$4 and end_date = $5 ";
+    pg_prepare($GLOBALS['dbconn'], 'deleteBooking', $query);
+    $result = pg_execute($GLOBALS['dbconn'], 'deleteBooking', [$sin, $rn, $hn, $sd, $ed]);
+    return $result;
+}
+
+function getRents($sin){
+    $query = "SELECT * FROM rents WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
+    // pg_prepare($GLOBALS['dbconn'], 'getRents', $query);
+    // $result = pg_execute($GLOBALS['dbconn'], 'getRents', [$sin]);
+    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);
+    
+    return $result;
+
+}
+
+function createRents($sin, $rn, $hn, $sd, $ed, $was_booked){
+    $query = "insert into rents (customer_sin, room_number, hotel_name, start_date, end_date, was_booked)
+    VALUES ($1, $2, $3, $4, $5, $6)";
+    pg_prepare($GLOBALS['dbconn'], 'createRents', $query);
+    $result = pg_execute($GLOBALS['dbconn'], 'createRents', [$sin, $rn, $hn, $sd, $ed, $was_booked]);
+    echo "result:";
+    var_dump($result);
+    return (pg_fetch_object($result));
+}
+// insert into rents (customer_sin, room_number, hotel_name, start_date, end_date, was_booked)
+// VALUES
+// ('111111111', 3, 'The Plaza Hotel', '2023-04-11', '2023-04-12', true);
+
 
 // Used in customer.php
 function getView1() {
