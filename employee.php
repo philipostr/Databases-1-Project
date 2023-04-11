@@ -2,6 +2,7 @@
     session_start();
     require_once 'db.php';
 
+
     // check if someone went straight to this page without logging in
     if (!isset($_SESSION['username']) || !isset($_SESSION['usertype']) || $_SESSION['usertype'] != 'employee') {
         header("location: {$PGVALUES['host']}/Databases-1-Project/login.php");
@@ -16,7 +17,7 @@
     $user = $_SESSION['username'];
     
     // print_r( getEmployeeInfo($user));
-    $empinf = getEmployeeSinAndName($user);
+    $empinf = getSinAndName('employee', $user);
     // var_dump($empinf);
     $esin = $empinf->employee_sin;
     $name = $empinf ->name;
@@ -26,15 +27,34 @@
     // echo "<br/> <br/>";
     var_dump($r);
     echo "<br/> <br/>";
+
+    
     $csin ="111111111";
+    $_SESSION['selectedcsin'] = $csin;
+
     $bookings =(getBookings($csin));
-    while($row = pg_fetch_object($bookings)) {
-        print_r($row); 
-    }
+	$bookingsr = pg_fetch_all($bookings);
+
+    // $bookings =(getBookings($csin));
+    // while($row = pg_fetch_object($bookings)) {
+    //     print_r($row); 
+    // }
     
     // var_dump( getEmployeeHotel($sin));
 
     // include 'convertbooking.php';
+
+    if (isset($_POST['selected']))
+{
+	echo "selected!!!";
+    echo $_POST['selected'];
+    var_dump( $bookingsr[ $_POST['selected'] ] );
+    $selectedbooking = $bookingsr[ $_POST['selected'] ];
+    echo $selectedbooking['hotel_name'];
+    var_dump ($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'], $selectedbooking['start_date'], $selectedbooking['end_date'], true);
+    $r = createRents($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date'], true);
+    var_dump($r);
+}
 
 ?>
 <html>
@@ -61,7 +81,43 @@
     </form>
 
     <?php
-    include 'convertbooking.php'; 
+    // include 'convertbooking.php'; 
     ?>
+    
+    <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
+
+    <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
+
+    <form action = "<?php echo $_SERVER['PHP_SELF'];?>" method='POST'>
+		<table>
+			<tr>
+				<th>Hotel Name</th>
+				<th>Room Number</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+                <th>Select </th>
+			</tr>
+
+			<?php
+            
+            $count=0;
+			foreach($bookingsr as $array)
+			{
+                
+			    echo '<tr>
+									<td>'. $array['hotel_name'].'</td>
+									<td>'. $array['room_number'].'</td>
+									<td>'. $array['start_date'].'</td>
+									<td>'. $array['end_date'].'</td>
+                                    <td><button type="submit" value="'.$count.'" name="selected" >SELECT</button></td>
+                                    
+
+			          </tr>';
+                $count++;
+			}
+			?>
+
+		</table>
+    </form>
 </body>
 </html>
