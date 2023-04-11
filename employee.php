@@ -52,6 +52,11 @@
 
     // include 'convertbooking.php';
 
+    if (isset($_POST['convert']))
+    {
+        echo "convert";
+    }
+
     if (isset($_POST['selected']))
 {
 	echo "selected!!!";
@@ -90,14 +95,18 @@
             <input name="customersin" type="text" placeholder="sin" required>
         </label><br>
         
-        <input name="login" type="submit" value="Covert booking to renting">
+        <input name="convert" type="submit" value="Covert booking to renting">
         <br>
-        <input name="login" type="submit" value="Rent without booking">
+        <input name="rent" type="submit" value="Rent without booking">
         <p><?php echo isset($problem) ? $problem : '' ?></p>
     </form>
 
     <?php
     // include 'convertbooking.php'; 
+    if (isset($_POST['convert']))
+    {
+       
+    
     ?>
     
     <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
@@ -177,6 +186,9 @@
 			?>
 
 	</table>
+    <?php
+    }
+    ?>
 
 </body>
 </html>
