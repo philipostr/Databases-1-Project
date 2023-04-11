@@ -16,12 +16,26 @@
 
     $view1 = getView1();
     $priceExtremes = getPriceExtremes();
-    $minPrice = $priceExtremes->min;
-    $maxPrice = $priceExtremes->max;
-    $maxCapacity = getMaxCapacity()->max;
+    $minPriceVal = $priceExtremes->min;
+    $maxPriceVal = $priceExtremes->max;
+    $maxCapVal = getMaxCapacity()->max;
     $roomsExtremes = getRoomsExtremes();
-    $minRooms = $roomsExtremes->min;
-    $maxRooms = $roomsExtremes->max;
+    $minRoomsVal = $roomsExtremes->min;
+    $maxRoomsVal = $roomsExtremes->max;
+
+    if (isset($_GET['search'])) {
+        $startDate = $_GET['startDate'];
+        $endDate = $_GET['endDate'];
+        $area = $_GET['area'];
+        $chain = $_GET['chain'];
+        $minCat= $_GET['minCat'];
+        $maxCat = $_GET['maxCat'];
+        $minCap = $_GET['minCap'];
+        $anyPrice = isset($_GET['anyPrice']) && $_GET['anyPrice']=='on';
+        $maxPrice = $_GET['maxPrice'];
+        $anyRooms = isset($_GET['anyRooms']) && $_GET['anyRooms']=='on';
+        $maxRooms = $_GET['maxRooms'];        
+    }
 
 ?>
 <html>
@@ -37,18 +51,20 @@
     
     <form method="GET">
         <label>
-            <b>Start Date</b> <input name="startDate" type="date" required>
+            <b>Start Date</b> <input name="startDate" type="date" <?php if(isset($startDate)) echo 'value="'.$startDate.'"' ?> required>
         </label>
         <label>
-            <b>End Date</b> <input name="endDate" type="date" required>
+            <b>End Date</b> <input name="endDate" type="date" <?php if(isset($endDate)) echo 'value="'.$endDate.'"' ?> required>
         </label><br>
 
         <label>
             <b>Area</b> <select name="area" required>
-                <option value="" disabled selected hidden>Select city...</option>
+                <option value="" disabled <?php echo isset($area) ? '' : 'selected' ?> hidden>Select city...</option>
                 <?php
                     foreach ($view1 as $city_rooms) {
-                        echo '<option value="'.$city_rooms['city'].'">'.$city_rooms['city'].' ('.$city_rooms['count'].' total rooms available)</option>';
+                        echo '<option value="'.$city_rooms['city'].'" '.((isset($area) && $area==$city_rooms['city']) ? 'selected' : '').'>'
+                            .$city_rooms['city'].' ('.$city_rooms['count'].' total rooms available)
+                        </option>';
                     }
                 ?>
             </select>
@@ -56,57 +72,45 @@
 
         <label>
             Chain <select name="chain">
-                <option value="" disabled selected hidden>Select chain...</option>
-                <option value="sugar">Sugar Deluxe</option>
-                <option value="maple">Maple Inn</option>
-                <option value="paradise">Paradise Away</option>
-                <option value="north">North Vacation</option>
-                <option value="reddington">Reddington Resort</option>
+                <option value="none" <?php echo isset($chain) ? '' : 'selected' ?> hidden>Select chain...</option>
+                <option value="sugar" <?php echo (isset($chain) && $chain=='sugar') ? 'selected' : '' ?>>Sugar Deluxe</option>
+                <option value="maple" <?php echo (isset($chain) && $chain=='maple') ? 'selected' : '' ?>>Maple Inn</option>
+                <option value="paradise" <?php echo (isset($chain) && $chain=='paradise') ? 'selected' : '' ?>>Paradise Away</option>
+                <option value="north" <?php echo (isset($chain) && $chain=='north') ? 'selected' : '' ?>>North Vacation</option>
+                <option value="reddington" <?php echo (isset($chain) && $chain=='reddington') ? 'selected' : '' ?>>Reddington Resort</option>
             </select>
         </label><br>
         Category
         <label>
-            min <input name="mincat" type="number" min="1" max="5" value="1">
+            min <input name="minCat" type="number" min="1" max="5" value="<?php echo isset($minCat) ? $minCat : 1 ?>">
         </label>
         <label>
-            max <input name="maxcat" type="number" min="1" max="5" value="5">
+            max <input name="maxCat" type="number" min="1" max="5" value="<?php echo isset($maxCat) ? $maxCat : 5 ?>">
         </label><br>
 
         <label>
-            Price limit ($/day) <input id="maxprice" name="maxprice" type="number" min="<?php echo $minPrice; ?>" max="<?php echo $maxPrice; ?>" value="<?php echo $minPrice; ?>">
+            Price limit ($/day) <input id="maxPrice" name="maxPrice" type="number" min="<?php echo $minPriceVal; ?>" max="<?php echo $maxPriceVal; ?>" value="<?php echo isset($maxPrice) ? $maxPrice : $minPriceVal ?>">
         </label>
         <label>
-            Any price <input name="anyprice" type="checkbox" onClick="anypriceChanged(this)">
+            Any price <input name="anyPrice" type="checkbox" onClick="anyPriceChanged(this)" <?php echo isset($anyPrice)&&$anyPrice ? 'checked' : '' ?>>
         </label><br>
 
         <label>
-            Minimum room capacity <input name="mincap" type="number" min="1" max="<?php echo $maxCapacity; ?>" value="1">
+            Minimum room capacity <input name="minCap" type="number" min="1" max="<?php echo $maxCapVal; ?>" value="<?php echo isset($minCap) ? $minCap : 1 ?>">
         </label><br>
 
         <label>
-            Total hotel room limit <input id="maxrooms" name="maxrooms" type="number" min="<?php echo $minRooms; ?>" max="<?php echo $maxRooms; ?>" value="<?php echo $minRooms; ?>">
+            Total hotel room limit <input id="maxRooms" name="maxRooms" type="number" min="<?php echo $minRoomsVal; ?>" max="<?php echo $maxRoomsVal; ?>" value="<?php echo isset($maxRooms) ? $maxRooms : $minRoomsVal; ?>">
         </label>
         <label>
-            Any amount <input name="anyrooms" type="checkbox" onClick="anyroomsChanged(this)">
+            Any amount <input name="anyRooms" type="checkbox" onClick="anyRoomsChanged(this)" <?php echo isset($anyRooms)&&$anyRooms ? 'checked' : '' ?>>
         </label><br>
 
-        <input type="submit" value="Search rooms">
+        <input name="search" type="submit" value="Search rooms"><br><br><hr>
         
+        <?php if(isset($_GET['search'])) include 'searchResults.php'; ?>
+
     </form>
-
-    <script>
-        function anypriceChanged(anyprice) {
-            let maxprice = document.getElementById('maxprice');
-            if (anyprice.checked) maxprice.disabled = true;
-            else maxprice.disabled = false;
-        }
-
-        function anyroomsChanged(anyrooms) {
-            let maxrooms = document.getElementById('maxrooms');
-            if (anyrooms.checked) maxrooms.disabled = true;
-            else maxrooms.disabled = false;
-        }
-    </script>
 
 </body>
 </html>
