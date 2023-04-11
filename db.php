@@ -85,3 +85,28 @@ function getRoomsExtremes() {
     $result = pg_execute($GLOBALS['dbconn'], 'getRoomsExtremes', []);
     return pg_fetch_object($result);
 }
+
+// Used in searchResults.php
+function getSearchResults($startDate, $endDate, $area, $chain, $minCat, $maxCat, $minCap, $maxPrice, $maxRooms) {
+    $areaCheck = $area.'%';
+    $query = "
+    SELECT R.*, C.chain_name, H.address
+    FROM room R
+    INNER JOIN hotel H ON R.hotel_name = H.hotel_name
+    INNER JOIN chain_hotel C ON H.hotel_name = C.hotel_name WHERE
+    NOT EXISTS (SELECT start_date FROM books WHERE start_date < $1 AND end_date > $1)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date < $1 AND end_date > $1)
+    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date < $2 AND end_date > $2)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date < $2 AND end_date > $2)
+    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date > $1 AND end_date < $2)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date > $1 AND end_date < $2)
+    AND H.address LIKE $3 "
+    .($chain=='none' ? "AND $4 = $4" : "AND C.chain_name = $4")
+    ." AND H.category >= $5 AND H.category <= $6
+    AND R.capacity >= $7 "
+    .($maxPrice==-1 ? "AND $8 = $8 " : "AND R.price <= $8 ")
+    .($maxRooms==-1 ? "AND $9 = $9;" : "AND H.number_of_rooms <= $9;");
+    pg_prepare($GLOBALS['dbconn'], 'getSearchResults', $query);
+    $result = pg_execute($GLOBALS['dbconn'], 'getSearchResults', [$startDate, $endDate, $areaCheck, $chain, $minCat, $maxCat, $minCap, $maxPrice, $maxRooms]);
+    return pg_fetch_all($result);
+}

@@ -73,11 +73,11 @@
         <label>
             Chain <select name="chain">
                 <option value="none" <?php echo isset($chain) ? '' : 'selected' ?> hidden>Select chain...</option>
-                <option value="sugar" <?php echo (isset($chain) && $chain=='sugar') ? 'selected' : '' ?>>Sugar Deluxe</option>
-                <option value="maple" <?php echo (isset($chain) && $chain=='maple') ? 'selected' : '' ?>>Maple Inn</option>
-                <option value="paradise" <?php echo (isset($chain) && $chain=='paradise') ? 'selected' : '' ?>>Paradise Away</option>
-                <option value="north" <?php echo (isset($chain) && $chain=='north') ? 'selected' : '' ?>>North Vacation</option>
-                <option value="reddington" <?php echo (isset($chain) && $chain=='reddington') ? 'selected' : '' ?>>Reddington Resort</option>
+                <option value="Sugar Deluxe" <?php echo (isset($chain) && $chain=='Sugar Deluxe') ? 'selected' : '' ?>>Sugar Deluxe</option>
+                <option value="Maple Inn" <?php echo (isset($chain) && $chain=='Maple Inn') ? 'selected' : '' ?>>Maple Inn</option>
+                <option value="Paradise Away" <?php echo (isset($chain) && $chain=='Paradise Away') ? 'selected' : '' ?>>Paradise Away</option>
+                <option value="North Vacation" <?php echo (isset($chain) && $chain=='North Vacation') ? 'selected' : '' ?>>North Vacation</option>
+                <option value="Reddington Resort" <?php echo (isset($chain) && $chain=='Reddington Resort') ? 'selected' : '' ?>>Reddington Resort</option>
             </select>
         </label><br>
         Category
