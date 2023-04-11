@@ -34,6 +34,8 @@
 
     $bookings =(getBookings($csin));
 	$bookingsr = pg_fetch_all($bookings);
+    echo "bookingsr ";
+    print_r( $bookingsr);
 
     // $bookings =(getBookings($csin));
     // while($row = pg_fetch_object($bookings)) {
@@ -48,12 +50,18 @@
 {
 	echo "selected!!!";
     echo $_POST['selected'];
-    var_dump( $bookingsr[ $_POST['selected'] ] );
+    echo '<br>';
+    print_r( $bookingsr[ $_POST['selected'] ] );
     $selectedbooking = $bookingsr[ $_POST['selected'] ];
     echo $selectedbooking['hotel_name'];
-    var_dump ($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'], $selectedbooking['start_date'], $selectedbooking['end_date'], true);
+    // var_dump ($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'], $selectedbooking['start_date'], $selectedbooking['end_date'], true);
     $r = createRents($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date'], true);
     var_dump($r);
+    echo '<br>';
+    $r2 = deleteBooking($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date']);
+    var_dump($r2);
+    $bookings =(getBookings($csin));
+	$bookingsr = pg_fetch_all($bookings);
 }
 
 ?>
