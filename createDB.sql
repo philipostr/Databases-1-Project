@@ -545,3 +545,28 @@ INSERT INTO customer (customer_sin, name, address, username, password) VALUES
 ('888888889', 'Rachel Chen', '1111 Wind St, New York', 'rchen', 'password18'),
 ('999999990', 'Sophia Wang', '2222 Earth St, Los Angeles', 'swang', 'password19'),
 ('000000002', 'Tony Davis', '3333 Air St, San Francisco', 'tdavis', 'password20');
+
+
+-- Trigger for after adding a new hotel to an existing chain;
+CREATE FUNCTION update_num_of_hotels() RETURNS trigger AS $update_num_of_hotels$
+    BEGIN
+        UPDATE chain SET num_of_hotel = num_of_hotel + 1 where chain.chain_name = NEW.chain_name;
+		RETURN NULL;
+    END;
+$update_num_of_hotels$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_num_of_hotels AFTER INSERT ON chain_hotel
+    FOR EACH ROW EXECUTE FUNCTION update_num_of_hotels();
+
+
+-- Trigger for after adding a new room to an existing hotel;
+CREATE FUNCTION update_num_of_rooms() RETURNS trigger AS $update_num_of_rooms$
+    BEGIN
+        UPDATE hotel SET number_of_rooms = number_of_rooms + 1 where hotel.hotel_name = NEW.hotel_name;
+		RETURN NULL;
+    END;
+$update_num_of_rooms$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_num_of_rooms AFTER INSERT ON room
+    FOR EACH ROW EXECUTE FUNCTION update_num_of_rooms();
+
