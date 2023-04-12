@@ -25,8 +25,8 @@
     $hotel = $r -> hotel_name;
     $position= $r -> position;
     // echo "<br/> <br/>";
-    var_dump($r);
-    echo "<br/> <br/>";
+    // var_dump($r);
+    // echo "<br/> <br/>";
 
     
     
@@ -49,7 +49,7 @@
  
     if (isset($_POST['customersin']))
     {
-       echo $_POST['customersin'];
+    //    echo $_POST['customersin'];
        $csin =  $_POST['customersin'];
         $_SESSION['selectedcsin'] = $csin;
         $customername = getCustomerNameFromSin($_POST['customersin']);
