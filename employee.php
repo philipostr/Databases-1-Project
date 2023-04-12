@@ -50,12 +50,12 @@
        echo $_POST['customersin'];
        $csin =  $_POST['customersin'];
         $_SESSION['selectedcsin'] = $csin;
+        $customername = getCustomerNameFromSin($_POST['customersin']);
         
     }
     if (isset($_POST['convert']))
     {
         $_SESSION['employee_choice'] = "convert";
-
         
     }
     if (isset($_POST['newrent']))
@@ -69,25 +69,7 @@
         // include 'rentWithoutBooking.php';
     //}
 
-    if (isset($_POST['selected']))
-{
-	echo "selected!!!";
-    echo $_POST['selected'];
-    echo '<br>';
-    print_r( $bookingsr[ $_POST['selected'] ] );
-    $selectedbooking = $bookingsr[ $_POST['selected'] ];
-    echo $selectedbooking['hotel_name'];
-    // var_dump ($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'], $selectedbooking['start_date'], $selectedbooking['end_date'], true);
-    $r = createRents($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date'], true);
-    var_dump($r);
-    echo '<br>';
-    $r2 = deleteBooking($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date']);
-    var_dump($r2);
-    $bookings =(getBookings($csin));
-	$bookingsr = pg_fetch_all($bookings);
-    $rents =(getRents($csin));
-	$rentsr = pg_fetch_all($rents);
-}
+
 
 ?>
 <html>
@@ -116,19 +98,49 @@
     <?php
     // include 'convertbooking.php'; 
     // if (isset($_POST['convert']))
+    if (isset($_SESSION['selectedcsin'])){
+        $checksin = getCustomerNameFromSin($_SESSION['selectedcsin']);        
+        if (pg_num_rows($checksin) <= 0 ){
+            echo "<h2>There are no customers with that SIN. Please try another.</h2>";
+        }
+        else{
+            $cname = pg_fetch_object($checksin)->name;
+            echo "<h2> Displaying information for customer ".$_SESSION['selectedcsin'].", ". $cname." </h2>";
+        }        
+    }
     if ($_SESSION['employee_choice'] == 'convert')
     {
 
         $csin = $_SESSION['selectedcsin'];
         $bookings = getBookings( $csin);
         $bookingsr = pg_fetch_all($bookings);
-        echo "bookingsr ";
-        print_r( $bookingsr);
+        // echo "bookingsr ";
+        // print_r( $bookingsr);
         
-        echo '<br><br>';
+        // echo '<br><br>';
         $rents =(getRents($csin));
         $rentsr = pg_fetch_all($rents);
-        print_r( $rentsr);
+        // print_r( $rentsr);
+
+        if (isset($_POST['selected']))
+        {
+            // echo "selected!!!";
+            // echo $_POST['selected'];
+            // echo '<br>';
+            // print_r( $bookingsr[ $_POST['selected'] ] );
+            $selectedbooking = $bookingsr[ $_POST['selected'] ];
+            // echo $selectedbooking['hotel_name'];
+            // var_dump ($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'], $selectedbooking['start_date'], $selectedbooking['end_date'], true);
+            $r = createRents($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date'], true);
+            // var_dump($r);
+            // echo '<br>';
+            $r2 = deleteBooking($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date']);
+            // var_dump($r2);
+            $bookings =(getBookings($csin));
+            $bookingsr = pg_fetch_all($bookings);
+            $rents =(getRents($csin));
+            $rentsr = pg_fetch_all($rents);
+        }
 
     ?>
     
