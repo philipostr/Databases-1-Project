@@ -54,8 +54,13 @@
 
     if (isset($_POST['convert']))
     {
-        echo "convert";
+        $_SESSION['employee_choice'] = "convert";
     }
+    if (isset($_POST['newrent']))
+    {
+        $_SESSION['employee_choice'] = "newrent";
+    }
+    
 
     if (isset($_POST['selected']))
 {
@@ -75,6 +80,12 @@
 	$bookingsr = pg_fetch_all($bookings);
     $rents =(getRents($csin));
 	$rentsr = pg_fetch_all($rents);
+}
+
+$show_convert=false;
+if (isset($_POST['convert']))
+{
+    $show_convert=true;
 }
 
 ?>
@@ -97,13 +108,13 @@
         
         <input name="convert" type="submit" value="Covert booking to renting">
         <br>
-        <input name="rent" type="submit" value="Rent without booking">
+        <input name="newrent" type="submit" value="Rent without booking">
         <p><?php echo isset($problem) ? $problem : '' ?></p>
     </form>
 
     <?php
     // include 'convertbooking.php'; 
-    if (isset($_POST['convert']))
+    if ($_SESSION['employee_choice'] == "convert")
     {
        
     
