@@ -74,8 +74,6 @@ function createRents($sin, $rn, $hn, $sd, $ed, $was_booked){
     VALUES ($1, $2, $3, $4, $5, $6)";
     pg_prepare($GLOBALS['dbconn'], 'createRents', $query);
     $result = pg_execute($GLOBALS['dbconn'], 'createRents', [$sin, $rn, $hn, $sd, $ed, $was_booked]);
-    echo "result:";
-    var_dump($result);
     return (pg_fetch_object($result));
 }
 // insert into rents (customer_sin, room_number, hotel_name, start_date, end_date, was_booked)

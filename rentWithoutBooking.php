@@ -66,7 +66,6 @@
         //echo $startDate;
         //echo $endDate;
         createRents($csin, $selectedroom['room_number'], $hotel, $startDate, $endDate, "false");
-        echo "Rent Successfull!";
     }
 
     //createRents($sin, $rn, $hn, $sd, $ed, $was_booked)
