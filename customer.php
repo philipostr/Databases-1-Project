@@ -72,7 +72,7 @@
 
         <label>
             Chain <select name="chain">
-                <option value="none" <?php echo isset($chain) ? '' : 'selected' ?> hidden>Select chain...</option>
+                <option value="any" <?php echo (isset($chain) && $chain=='any') ? 'selected' : '' ?>>Any chain</option>
                 <option value="Sugar Deluxe" <?php echo (isset($chain) && $chain=='Sugar Deluxe') ? 'selected' : '' ?>>Sugar Deluxe</option>
                 <option value="Maple Inn" <?php echo (isset($chain) && $chain=='Maple Inn') ? 'selected' : '' ?>>Maple Inn</option>
                 <option value="Paradise Away" <?php echo (isset($chain) && $chain=='Paradise Away') ? 'selected' : '' ?>>Paradise Away</option>
@@ -107,10 +107,10 @@
         </label><br>
 
         <input name="search" type="submit" value="Search rooms"><br><br><hr>
-        
-        <?php if(isset($_GET['search'])) include 'searchResults.php'; ?>
 
     </form>
+
+    <?php if(isset($_GET['search'])) include 'searchResults.php'; ?>
 
 </body>
 </html>

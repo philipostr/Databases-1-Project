@@ -129,7 +129,7 @@ function getSearchResults($startDate, $endDate, $area, $chain, $minCat, $maxCat,
     AND NOT EXISTS (SELECT start_date FROM books WHERE start_date > $1 AND end_date < $2)
     AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date > $1 AND end_date < $2)
     AND H.address LIKE $3 "
-    .($chain=='none' ? "AND $4 = $4" : "AND C.chain_name = $4")
+    .($chain=='any' ? "AND $4 = $4" : "AND C.chain_name = $4")
     ." AND H.category >= $5 AND H.category <= $6
     AND R.capacity >= $7 "
     .($maxPrice==-1 ? "AND $8 = $8 " : "AND R.price <= $8 ")
@@ -137,4 +137,12 @@ function getSearchResults($startDate, $endDate, $area, $chain, $minCat, $maxCat,
     pg_prepare($GLOBALS['dbconn'], 'getSearchResults', $query);
     $result = pg_execute($GLOBALS['dbconn'], 'getSearchResults', [$startDate, $endDate, $areaCheck, $chain, $minCat, $maxCat, $minCap, $maxPrice, $maxRooms]);
     return pg_fetch_all($result);
+}
+
+// Used in submitBooking.php
+function createBooks($sin, $rn, $hn, $sd, $ed){
+    $query = "INSERT INTO books VALUES ($1, $2, $3, $4, $5)";
+    pg_prepare($GLOBALS['dbconn'], 'createBooks', $query);
+    pg_execute($GLOBALS['dbconn'], 'createBooks', [$sin, $rn, $hn, $sd, $ed]);
+    //echo '<p>'.$sin.' '.$rn.' '.$hn.' '.$sd.' '.$ed.'</p>';
 }
