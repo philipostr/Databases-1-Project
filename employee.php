@@ -15,42 +15,18 @@
 
 
     $user = $_SESSION['username'];
-    
-    // print_r( getEmployeeInfo($user));
     $empinf = getSinAndName('employee', $user);
     // var_dump($empinf);
     $esin = $empinf->employee_sin;
     $name = $empinf ->name;
     $r = ( getEmployeeHotel($esin) );
     $hotel = $r -> hotel_name;
-    $position= $r -> position;
-    // echo "<br/> <br/>";
-    // var_dump($r);
-    // echo "<br/> <br/>";
-
-    
-    
+    $position= $r -> position;    
     $_SESSION['selectedhotel'] = $hotel;
-    // $_SESSION['employee_choice'] ='';
-    // $_SESSION['selectedcsin'] ='';
 
-    
-
-
-    // $bookings =(getBookings($csin));
-    // while($row = pg_fetch_object($bookings)) {
-    //     print_r($row); 
-    // }
-    
-    // var_dump( getEmployeeHotel($sin));
-
-    // include 'convertbooking.php';
-
- 
     if (isset($_POST['customersin']))
     {
-    //    echo $_POST['customersin'];
-       $csin =  $_POST['customersin'];
+        $csin =  $_POST['customersin'];
         $_SESSION['selectedcsin'] = $csin;
         $customername = getCustomerNameFromSin($_POST['customersin']);
         
@@ -66,10 +42,6 @@
     }
 
     
-    
-    //if (isset($_POST['rent'])){
-        // include 'rentWithoutBooking.php';
-    //}
 
 
 
@@ -87,8 +59,7 @@
     <h1> <?php echo $hotel ?> Employee Page </h1>
     <h2>Welcome, <?php echo $name ." ". $position ?> </h2>
 
-    <!-- <button>Covert booking to renting</button>
-    <button>Rent without booking</button> -->
+    
     <form method="POST" action="">
         <label>Customer SIN: 
             <input name="customersin" type="text" placeholder="sin" value="<?php echo isset($_SESSION['selectedcsin'])? $_SESSION['selectedcsin'] : ''?>" required>
@@ -101,8 +72,7 @@
     </form>
 
     <?php
-    // include 'convertbooking.php'; 
-    // if (isset($_POST['convert']))
+ 
     $isvalidsin = false;
     if (isset($_SESSION['selectedcsin'])){
         $checksin = getCustomerNameFromSin($_SESSION['selectedcsin']);        
@@ -122,28 +92,18 @@
         $csin = $_SESSION['selectedcsin'];
         $bookings = getBookings($csin, $hotel);
         $bookingsr = pg_fetch_all($bookings);
-        // echo "bookingsr ";
-        // print_r( $bookingsr);
-        
-        // echo '<br><br>';
+
         $rents =(getRents($csin, $hotel));
         $rentsr = pg_fetch_all($rents);
-        // print_r( $rentsr);
-
+  
         if (isset($_POST['selected']))
         {
             // echo "selected!!!";
-            // echo $_POST['selected'];
-            // echo '<br>';
             // print_r( $bookingsr[ $_POST['selected'] ] );
             $selectedbooking = $bookingsr[ $_POST['selected'] ];
-            // echo $selectedbooking['hotel_name'];
-            // var_dump ($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'], $selectedbooking['start_date'], $selectedbooking['end_date'], true);
             $r = createRents($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date'], true);
-            // var_dump($r);
-            // echo '<br>';
             $r2 = deleteBooking($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date']);
-            // var_dump($r2);
+   
             $bookings =(getBookings($csin, $hotel));
             $bookingsr = pg_fetch_all($bookings);
             $rents =(getRents($csin, $hotel));
@@ -171,16 +131,13 @@
             {
                 $count=0;
 			foreach($bookingsr as $array)
-			{
-                
+			{                
 			    echo '<tr>
                 <!--	<td>'. $array['hotel_name'].'</td>-->
 									<td>'. $array['room_number'].'</td>
 									<td>'. $array['start_date'].'</td>
 									<td>'. $array['end_date'].'</td>
                                     <td><button type="submit" value="'.$count.'" name="selected" >SELECT</button></td>
-                                    
-
 			          </tr>';
                 $count++;
 			}
@@ -196,7 +153,6 @@
 
     <h3>Customer <?php echo $csin ?> rented the following today: </h3>
 
-
     <table>
 			<tr>
 				<!-- <th>Hotel Name</th> -->
@@ -211,8 +167,7 @@
             if ($rentsr != false)
             {
 			foreach($rentsr as $array)
-			{
-                
+			{                
 			    echo '<tr>
                 <!-- 	<td>'. $array['hotel_name'].'</td> -->
 									<td>'. $array['room_number'].'</td>
