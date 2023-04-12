@@ -4,6 +4,10 @@
     require_once 'db.php';
     DBconnect();
 
+    if(isset($_POST['logout'])) {
+        session_unset();
+    }
+
     if (isset($_POST['login'])) {
         $usertype = $_POST['usertype'];
         $username = $_POST['username'];
@@ -33,7 +37,7 @@
 </head>
 <body>
     <h1>Welcome to Alliance Hotels!</h1>
-    <form method="POST">
+    <form method="post">
         <label>
             <input name="usertype" type="radio" value="customer" <?php if(isset($usertype)) {if ($usertype=='customer') echo 'checked';} else {echo 'checked';}  ?>>
             Customer

@@ -45,11 +45,14 @@
     <title>Alliance Hotels</title>
 </head>
 <body>
+    <form method="post" action="login.php">
+        <input name="logout" type="submit" value="Log out">
+    </form>
     <h1> Alliance Hotels Customer Page</h1>
     <h2>Welcome, <?php echo $name ?> </h2>
     <p>Find available rooms (<b>bold</b> is required):</p>
     
-    <form method="GET">
+    <form method="get">
         <label>
             <b>Start Date</b> <input name="startDate" type="date" <?php if(isset($startDate)) echo 'value="'.$startDate.'"' ?> required>
         </label>
