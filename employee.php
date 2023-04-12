@@ -29,10 +29,11 @@
     echo "<br/> <br/>";
 
     
-    $csin ="111111111";
-    $_SESSION['selectedcsin'] = $csin;
+    
     $_SESSION['selectedhotel'] = $hotel;
 
+    $csin ="111111111";
+    $_SESSION['selectedcsin'] = $csin;
     $bookings =(getBookings($csin));
 	$bookingsr = pg_fetch_all($bookings);
     echo "bookingsr ";
@@ -53,13 +54,23 @@
 
     // include 'convertbooking.php';
 
+ 
     if (isset($_POST['convert']))
     {
-        echo "convert";
+        $_SESSION['employee_choice'] = "convert";
+    }
+    if (isset($_POST['newrent']))
+    {
+        $_SESSION['employee_choice'] = "newrent";
+    }
+
+    if (isset($_POST['customersin']))
+    {
+       echo $_POST['customersin'];
     }
     
     //if (isset($_POST['rent'])){
-        include 'rentWithoutBooking.php';
+        // include 'rentWithoutBooking.php';
     //}
 
     if (isset($_POST['selected']))
@@ -102,14 +113,15 @@
         
         <input name="convert" type="submit" value="Covert booking to renting">
         <br>
-        <input name="rent" type="submit" value="Rent without booking">
+        <input name="newrent" type="submit" value="Rent without booking">
         <p><?php echo isset($problem) ? $problem : '' ?></p>
     </form>
 
     <?php
     // include 'convertbooking.php'; 
-    if (isset($_POST['convert']))
-    {}
+    // if (isset($_POST['convert']))
+    if ($_SESSION['employee_choice'] == 'convert')
+    {
     ?>
     
     <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
@@ -190,7 +202,11 @@
 
 	</table>
     <?php
-    
+    }
+    if ($_SESSION['employee_choice'] == 'newrent')
+    {
+        include 'rentWithoutBooking.php';
+    }
     ?>
 
 </body>
