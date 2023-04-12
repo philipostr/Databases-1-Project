@@ -55,7 +55,6 @@
         $availableRooms =(getAvailableRoomsForHotel($startDate, $endDate, $hotel));
         $selectedroom = $availableRooms[ $_POST['selected'] ];
         //echo $selectedroom;
-        
         //echo 'HIIIII <br><br><br><br><br>';
         
         //var_dump($_POST['selected']);
@@ -66,6 +65,7 @@
         //echo $startDate;
         //echo $endDate;
         createRents($csin, $selectedroom['room_number'], $hotel, $startDate, $endDate, "false");
+        $availableRooms =(getAvailableRoomsForHotel($startDate, $endDate, $hotel));
     }
 
     //createRents($sin, $rn, $hn, $sd, $ed, $was_booked)
@@ -73,7 +73,7 @@
 ?>
 
 <body>
-    <h3>RENTING WIHTOUT BOOKING <?php $hotel?></h3>
+    <h3>RENTING WITHOUT BOOKING <?php $hotel?></h3>
     <form method="POST">
         <!-- <label>
             <b>Room Number</b> <input name="roomNum" type="number" min=1 required>

@@ -166,8 +166,7 @@ function getAvailableRoomsForHotel($startDate, $endDate, $hotel){
     AND NOT EXISTS (SELECT start_date FROM books WHERE start_date >= $1 AND end_date <= $2 AND hotel_name = R.hotel_name AND room_number = R.room_number)
     AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date >= $1 AND end_date <= $2 AND hotel_name = R.hotel_name AND room_number = R.room_number)
     AND H.hotel_name= $3";
-    pg_prepare($GLOBALS['dbconn'], 'getAvailableRoomsForHotel', $query);
-    $result=pg_execute($GLOBALS['dbconn'], 'getAvailableRoomsForHotel', [$startDate, $endDate, $hotel]);
+    $result=pg_query_params($GLOBALS['dbconn'], $query, [$startDate, $endDate, $hotel]);
     return pg_fetch_all($result);
 }
 
