@@ -123,12 +123,12 @@ function getSearchResults($startDate, $endDate, $area, $chain, $minCat, $maxCat,
     FROM room R
     INNER JOIN hotel H ON R.hotel_name = H.hotel_name
     INNER JOIN chain_hotel C ON H.hotel_name = C.hotel_name WHERE
-    NOT EXISTS (SELECT start_date FROM books WHERE start_date < $1 AND end_date > $1)
-    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date < $1 AND end_date > $1)
-    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date < $2 AND end_date > $2)
-    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date < $2 AND end_date > $2)
-    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date > $1 AND end_date < $2)
-    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date > $1 AND end_date < $2)
+    NOT EXISTS (SELECT start_date FROM books WHERE start_date <= $1 AND end_date >= $1 AND hotel_name = R.hotel_name AND room_number = R.room_number)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date <= $1 AND end_date >= $1 AND hotel_name = R.hotel_name AND room_number = R.room_number)
+    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date <= $2 AND end_date >= $2 AND hotel_name = R.hotel_name AND room_number = R.room_number)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date <= $2 AND end_date >= $2 AND hotel_name = R.hotel_name AND room_number = R.room_number)
+    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date >= $1 AND end_date <= $2 AND hotel_name = R.hotel_name AND room_number = R.room_number)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date >= $1 AND end_date <= $2 AND hotel_name = R.hotel_name AND room_number = R.room_number)
     AND H.address LIKE $3 "
     .($chain=='any' ? "AND $4 = $4" : "AND C.chain_name = $4")
     ." AND H.category >= $5 AND H.category <= $6
