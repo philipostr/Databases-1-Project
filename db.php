@@ -172,3 +172,12 @@ function getAvailableRoomsForHotel($startDate, $endDate, $hotel){
     $result=pg_execute($GLOBALS['dbconn'], 'getAvailableRoomsForHotel', [$startDate, $endDate, $hotel]);
     return pg_fetch_all($result);
 }
+
+function validateDate($startDate, $endDate){
+    if ($startDate >= date("Y-m-d")){
+        if($startDate <= $endDate){
+            return true;
+        }
+    }
+    return false;
+}
