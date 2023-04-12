@@ -173,6 +173,7 @@ function getAvailableRoomsForHotel($startDate, $endDate, $hotel){
     return pg_fetch_all($result);
 }
 
+//used in rentWithoutBooking
 function validateDate($startDate, $endDate){
     if ($startDate >= date("Y-m-d")){
         if($startDate <= $endDate){
