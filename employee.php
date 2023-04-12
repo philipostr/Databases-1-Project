@@ -101,6 +101,9 @@
     <title>Alliance Hotels</title>
 </head>
 <body>
+    <form method="post" action="login.php">
+        <input name="logout" type="submit" value="Log out">
+    </form>
     <h1> <?php echo $hotel ?> Employee Page </h1>
     <h2>Welcome, <?php echo $name ." ". $position ?> </h2>
 
