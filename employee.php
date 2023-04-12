@@ -32,17 +32,7 @@
     
     $_SESSION['selectedhotel'] = $hotel;
 
-    $csin ="111111111";
-    $_SESSION['selectedcsin'] = $csin;
-    $bookings =(getBookings($csin));
-	$bookingsr = pg_fetch_all($bookings);
-    echo "bookingsr ";
-    print_r( $bookingsr);
-
-    echo '<br><br>';
-    $rents =(getRents($csin));
-	$rentsr = pg_fetch_all($rents);
-    print_r( $rentsr);
+    
 
 
     // $bookings =(getBookings($csin));
@@ -55,19 +45,25 @@
     // include 'convertbooking.php';
 
  
+    if (isset($_POST['customersin']))
+    {
+       echo $_POST['customersin'];
+       $csin =  $_POST['customersin'];
+        $_SESSION['selectedcsin'] = $csin;
+        
+    }
     if (isset($_POST['convert']))
     {
         $_SESSION['employee_choice'] = "convert";
+
+        
     }
     if (isset($_POST['newrent']))
     {
         $_SESSION['employee_choice'] = "newrent";
     }
 
-    if (isset($_POST['customersin']))
-    {
-       echo $_POST['customersin'];
-    }
+    
     
     //if (isset($_POST['rent'])){
         // include 'rentWithoutBooking.php';
@@ -111,7 +107,7 @@
     <button>Rent without booking</button> -->
     <form method="POST" action="">
         <label>Customer SIN: 
-            <input name="customersin" type="text" placeholder="sin" required>
+            <input name="customersin" type="text" placeholder="sin" value="<?php echo $_SESSION['selectedcsin']?>" required>
         </label><br>
         
         <input name="convert" type="submit" value="Covert booking to renting">
@@ -125,6 +121,18 @@
     // if (isset($_POST['convert']))
     if ($_SESSION['employee_choice'] == 'convert')
     {
+
+        $csin = $_SESSION['selectedcsin'];
+        $bookings = getBookings( $csin);
+        $bookingsr = pg_fetch_all($bookings);
+        echo "bookingsr ";
+        print_r( $bookingsr);
+        
+        echo '<br><br>';
+        $rents =(getRents($csin));
+        $rentsr = pg_fetch_all($rents);
+        print_r( $rentsr);
+
     ?>
     
     <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
