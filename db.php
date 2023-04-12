@@ -50,7 +50,7 @@ function getBookings($sin){
     return $result;
 }
 
-
+// Used in employee.php
 function deleteBooking($sin, $rn, $hn, $sd, $ed){
     $query = "DELETE FROM books WHERE customer_sin = $1 and  room_number = $2 and  hotel_name = $3 and start_date =$4 and end_date = $5 ";
     pg_prepare($GLOBALS['dbconn'], 'deleteBooking', $query);
@@ -58,16 +58,17 @@ function deleteBooking($sin, $rn, $hn, $sd, $ed){
     return $result;
 }
 
+// Used in employee.php
 function getRents($sin){
     $query = "SELECT * FROM rents WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
     // pg_prepare($GLOBALS['dbconn'], 'getRents', $query);
     // $result = pg_execute($GLOBALS['dbconn'], 'getRents', [$sin]);
-    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);
-    
+    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);  
     return $result;
 
 }
 
+// Used in employee.php
 function createRents($sin, $rn, $hn, $sd, $ed, $was_booked){
     $query = "insert into rents (customer_sin, room_number, hotel_name, start_date, end_date, was_booked)
     VALUES ($1, $2, $3, $4, $5, $6)";
@@ -147,7 +148,8 @@ function createBooks($sin, $rn, $hn, $sd, $ed){
     //echo '<p>'.$sin.' '.$rn.' '.$hn.' '.$sd.' '.$ed.'</p>';
 }
 
-getAvailableRoomsForHotel($startDate, $endDate, $hotel){
+// Used in employee.php
+function getAvailableRoomsForHotel($startDate, $endDate, $hotel){
     $query = "SELECT R.*, C.chain_name, H.address
     FROM room R
     INNER JOIN hotel H ON R.hotel_name = H.hotel_name
@@ -159,7 +161,7 @@ getAvailableRoomsForHotel($startDate, $endDate, $hotel){
     AND NOT EXISTS (SELECT start_date FROM books WHERE start_date > $1 AND end_date < $2)
     AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date > $1 AND end_date < $2)
     and WHERE H.hotel_name= $3";
-    pg_prepare($GLOBALS['dbconn'], 'createBooks', $query);
-    pg_execute($GLOBALS['dbconn'], 'createBooks', [$startDate, $endDate, $hotel]);
+    pg_prepare($GLOBALS['dbconn'], 'getAvailableRoomsForHotel', $query);
+    pg_execute($GLOBALS['dbconn'], 'getAvailableRoomsForHotel', [$startDate, $endDate, $hotel]);
     return pg_fetch_all($result);
 }
