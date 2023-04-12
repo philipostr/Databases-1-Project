@@ -31,6 +31,8 @@
     
     
     $_SESSION['selectedhotel'] = $hotel;
+    // $_SESSION['employee_choice'] ='';
+    // $_SESSION['selectedcsin'] ='';
 
     
 
@@ -89,7 +91,7 @@
     <button>Rent without booking</button> -->
     <form method="POST" action="">
         <label>Customer SIN: 
-            <input name="customersin" type="text" placeholder="sin" value="<?php echo $_SESSION['selectedcsin']?>" required>
+            <input name="customersin" type="text" placeholder="sin" value="<?php echo isset($_SESSION['selectedcsin'])? $_SESSION['selectedcsin'] : ''?>" required>
         </label><br>
         
         <input name="convert" type="submit" value="Covert booking to renting">
@@ -101,6 +103,7 @@
     <?php
     // include 'convertbooking.php'; 
     // if (isset($_POST['convert']))
+    $isvalidsin = false;
     if (isset($_SESSION['selectedcsin'])){
         $checksin = getCustomerNameFromSin($_SESSION['selectedcsin']);        
         if (pg_num_rows($checksin) <= 0 ){
@@ -109,9 +112,11 @@
         else{
             $cname = pg_fetch_object($checksin)->name;
             echo "<h2> Displaying information for customer ".$_SESSION['selectedcsin'].", ". $cname." </h2>";
+            $isvalidsin = true;
         }        
     }
-    if ($_SESSION['employee_choice'] == 'convert')
+    
+    if ( $isvalidsin and isset($_SESSION['employee_choice']) and $_SESSION['employee_choice'] == 'convert')
     {
 
         $csin = $_SESSION['selectedcsin'];
@@ -226,7 +231,7 @@
 	</table>
     <?php
     }
-    if ($_SESSION['employee_choice'] == 'newrent')
+    if (  $isvalidsin and isset($_SESSION['employee_choice']) and $_SESSION['employee_choice'] == 'newrent')
     {
         include 'rentWithoutBooking.php';
     }
