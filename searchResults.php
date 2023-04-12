@@ -45,7 +45,7 @@
                         <input class="invisible" name="rn" type="text" value="'.$room['room_number'].'">
                         <input class="invisible" name="sd" type="text" value="'.$startDate.'">
                         <input class="invisible" name="ed" type="text" value="'.$endDate.'">
-                        <input type="submit" value="Book">
+                        <input name="book'.$row.'" type="submit" value="Book" onClick="disableSubmit(this)">
                     </form>
                 </td>
             </tr>
@@ -91,3 +91,9 @@
         display: none;
     }
 </style>
+
+<script>
+    function disableSubmit(submit) {
+        setTimeout(() => {  submit.disabled = true; }, 100);
+    }
+</script>
