@@ -120,7 +120,7 @@
     {
 
         $csin = $_SESSION['selectedcsin'];
-        $bookings = getBookings( $csin);
+        $bookings = getBookings($csin, $hotel);
         $bookingsr = pg_fetch_all($bookings);
         // echo "bookingsr ";
         // print_r( $bookingsr);
@@ -144,7 +144,7 @@
             // echo '<br>';
             $r2 = deleteBooking($csin, $selectedbooking['room_number'], $selectedbooking['hotel_name'],$selectedbooking['start_date'],$selectedbooking['end_date']);
             // var_dump($r2);
-            $bookings =(getBookings($csin));
+            $bookings =(getBookings($csin, $hotel));
             $bookingsr = pg_fetch_all($bookings);
             $rents =(getRents($csin));
             $rentsr = pg_fetch_all($rents);

@@ -45,7 +45,7 @@
                         <input class="invisible" name="rn" type="text" value="'.$room['room_number'].'">
                         <input class="invisible" name="sd" type="text" value="'.$startDate.'">
                         <input class="invisible" name="ed" type="text" value="'.$endDate.'">
-                        <input name="book'.$row.'" type="submit" value="Book" onClick="disableSubmit(this)">
+                        <input type="submit" value="Book" onClick="disableSubmit(this)">
                     </form>
                 </td>
             </tr>

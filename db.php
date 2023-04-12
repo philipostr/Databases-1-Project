@@ -41,11 +41,11 @@ function getEmployeeHotel($sin){
 }
 
 // Used in employee.php
-function getBookings($sin){
-    $query = "SELECT * FROM books WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
+function getBookings($sin, $hn){
+    $query = "SELECT * FROM books WHERE customer_sin = $1 AND start_date = CURRENT_DATE AND hotel_name = $2";
     // pg_prepare($GLOBALS['dbconn'], 'getBookings', $query);
     // $result = pg_execute($GLOBALS['dbconn'], 'getBookings', [$sin]);
-    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);
+    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin, $hn]);
     
     return $result;
 }
