@@ -146,3 +146,20 @@ function createBooks($sin, $rn, $hn, $sd, $ed){
     pg_execute($GLOBALS['dbconn'], 'createBooks', [$sin, $rn, $hn, $sd, $ed]);
     //echo '<p>'.$sin.' '.$rn.' '.$hn.' '.$sd.' '.$ed.'</p>';
 }
+
+getAvailableRoomsForHotel($startDate, $endDate, $hotel){
+    $query = "SELECT R.*, C.chain_name, H.address
+    FROM room R
+    INNER JOIN hotel H ON R.hotel_name = H.hotel_name
+    INNER JOIN chain_hotel C ON H.hotel_name = C.hotel_name WHERE
+    NOT EXISTS (SELECT start_date FROM books WHERE start_date < $1 AND end_date > $1)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date < $1 AND end_date > $1)
+    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date < $2 AND end_date > $2)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date < $2 AND end_date > $2)
+    AND NOT EXISTS (SELECT start_date FROM books WHERE start_date > $1 AND end_date < $2)
+    AND NOT EXISTS (SELECT start_date FROM rents WHERE start_date > $1 AND end_date < $2)
+    and WHERE H.hotel_name= $3";
+    pg_prepare($GLOBALS['dbconn'], 'createBooks', $query);
+    pg_execute($GLOBALS['dbconn'], 'createBooks', [$startDate, $endDate, $hotel]);
+    return pg_fetch_all($result);
+}
