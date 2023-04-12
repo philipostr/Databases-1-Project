@@ -82,6 +82,12 @@ function createRents($sin, $rn, $hn, $sd, $ed, $was_booked){
 // VALUES
 // ('111111111', 3, 'The Plaza Hotel', '2023-04-11', '2023-04-12', true);
 
+// Used in employee.php
+function getCustomerNameFromSin($sin){
+    $query = "SELECT name FROM customer WHERE customer_sin = $1  ";
+    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);  
+    return (($result));
+}
 
 // Used in customer.php
 function getView1() {
