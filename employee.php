@@ -126,7 +126,7 @@
         // print_r( $bookingsr);
         
         // echo '<br><br>';
-        $rents =(getRents($csin));
+        $rents =(getRents($csin, $hotel));
         $rentsr = pg_fetch_all($rents);
         // print_r( $rentsr);
 
@@ -146,7 +146,7 @@
             // var_dump($r2);
             $bookings =(getBookings($csin, $hotel));
             $bookingsr = pg_fetch_all($bookings);
-            $rents =(getRents($csin));
+            $rents =(getRents($csin, $hotel));
             $rentsr = pg_fetch_all($rents);
         }
 
@@ -157,7 +157,7 @@
     <form action = "<?php echo $_SERVER['PHP_SELF'];?>" method='POST'>
 		<table>
 			<tr>
-				<th>Hotel Name</th>
+				<!-- <th>Hotel Name</th> -->
 				<th>Room Number</th>
 				<th>Start Date</th>
 				<th>End Date</th>
@@ -174,7 +174,7 @@
 			{
                 
 			    echo '<tr>
-									<td>'. $array['hotel_name'].'</td>
+                <!--	<td>'. $array['hotel_name'].'</td>-->
 									<td>'. $array['room_number'].'</td>
 									<td>'. $array['start_date'].'</td>
 									<td>'. $array['end_date'].'</td>
@@ -199,7 +199,7 @@
 
     <table>
 			<tr>
-				<th>Hotel Name</th>
+				<!-- <th>Hotel Name</th> -->
 				<th>Room Number</th>
 				<th>Start Date</th>
 				<th>End Date</th>
@@ -214,7 +214,7 @@
 			{
                 
 			    echo '<tr>
-									<td>'. $array['hotel_name'].'</td>
+                <!-- 	<td>'. $array['hotel_name'].'</td> -->
 									<td>'. $array['room_number'].'</td>
 									<td>'. $array['start_date'].'</td>
 									<td>'. $array['end_date'].'</td>

@@ -59,11 +59,11 @@ function deleteBooking($sin, $rn, $hn, $sd, $ed){
 }
 
 // Used in employee.php
-function getRents($sin){
-    $query = "SELECT * FROM rents WHERE customer_sin = $1 and start_date = CURRENT_DATE ";
+function getRents($sin, $hn){
+    $query = "SELECT * FROM rents WHERE customer_sin = $1 and start_date = CURRENT_DATE AND hotel_name = $2";
     // pg_prepare($GLOBALS['dbconn'], 'getRents', $query);
     // $result = pg_execute($GLOBALS['dbconn'], 'getRents', [$sin]);
-    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin]);  
+    $result = pg_query_params($GLOBALS['dbconn'], $query , [$sin, $hn]);  
     return $result;
 
 }
