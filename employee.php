@@ -55,15 +55,8 @@
     if (isset($_POST['convert']))
     {
         $_SESSION['employee_choice'] = "convert";
-        $bookings = getBookings( $_SESSION['selectedcsin']);
-        $bookingsr = pg_fetch_all($bookings);
-        echo "bookingsr ";
-        print_r( $bookingsr);
 
-        echo '<br><br>';
-        $rents =(getRents($csin));
-        $rentsr = pg_fetch_all($rents);
-        print_r( $rentsr);
+        
     }
     if (isset($_POST['newrent']))
     {
@@ -111,7 +104,7 @@
     <button>Rent without booking</button> -->
     <form method="POST" action="">
         <label>Customer SIN: 
-            <input name="customersin" type="text" placeholder="sin" required>
+            <input name="customersin" type="text" placeholder="sin" value="<?php echo $_SESSION['selectedcsin']?>" required>
         </label><br>
         
         <input name="convert" type="submit" value="Covert booking to renting">
@@ -125,6 +118,18 @@
     // if (isset($_POST['convert']))
     if ($_SESSION['employee_choice'] == 'convert')
     {
+
+        $csin = $_SESSION['selectedcsin'];
+        $bookings = getBookings( $csin);
+        $bookingsr = pg_fetch_all($bookings);
+        echo "bookingsr ";
+        print_r( $bookingsr);
+        
+        echo '<br><br>';
+        $rents =(getRents($csin));
+        $rentsr = pg_fetch_all($rents);
+        print_r( $rentsr);
+
     ?>
     
     <h3>Select which of customer <?php echo $csin ?>'s bookings would would like to convert </h3>
