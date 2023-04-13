@@ -273,8 +273,9 @@ INSERT INTO works VALUES
 ('901234579', 'The Ivy at Verity', '{Manager}'),
 ('012345691', 'The Broadview Hotel', '{Manager}');
 
+--update all the manager_sin to be the employee_sin that is in the works relation
 UPDATE hotel H SET manager_sin = (SELECT employee_sin FROM works WHERE hotel_name = H.hotel_name);
-
+--check if successfully updated
 SELECT H.hotel_name FROM hotel H INNER JOIN works W ON H.manager_sin = W.employee_sin;
 
 INSERT INTO room VALUES
